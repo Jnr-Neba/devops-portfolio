@@ -1,0 +1,31 @@
+name: Force GitHub Pages Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  actions: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './'   # make sure index.html is inside here
+
+      - name: Deploy to GitHub Pages (Forced)
+        uses: actions/deploy-pages@v1
+        env:
+          ACTIONS_DEPLOY_KEY: ${{ secrets.GITHUB_PAGES_TOKEN }}
